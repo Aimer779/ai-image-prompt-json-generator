@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI生图JSON提示词生成器</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <h1>AI生图提示词生成器</h1>
+            <form id="promptForm">
+                <div class="section">
+                    <h2>目标</h2>
+                    <textarea id="goal" placeholder="总体创作目标描述"></textarea>
+                </div>
+
+                <div class="section">
+                    <h2>主体</h2>
+                    <label>性别</label>
+                    <select id="gender">
+                        <option value="">请选择</option>
+                        <option value="男性">男性</option>
+                        <option value="女性">女性</option>
+                        <option value="其他">其他</option>
+                    </select>
+
+                    <label>年龄 <span class="optional">(可选)</span></label>
+                    <select id="age">
+                        <option value="">请选择</option>
+                        <option value="年轻">年轻</option>
+                        <option value="中年">中年</option>
+                        <option value="老年">老年</option>
+                    </select>
+
+                    <h3>外观</h3>
+                    <label>头发</label>
+                    <input type="text" id="hair" placeholder="发型、颜色、状态描述">
+
+                    <label>表情</label>
+                    <input type="text" id="expression" placeholder="具体情绪或神态">
+
+                    <label>眼神</label>
+                    <input type="text" id="eyes" placeholder="目光方向或情感表达">
+
+                    <label>其他特征 <span class="optional">(可选)</span></label>
+                    <input type="text" id="otherFeatures" placeholder="面部特征、体型等">
+
+                    <h3>服装</h3>
+                    <label>主要服装</label>
+                    <input type="text" id="mainClothing" placeholder="外套、上衣、裤子等描述">
+
+                    <label>配饰 <span class="optional">(可选)</span></label>
+                    <input type="text" id="accessories" placeholder="帽子、包、首饰等">
+
+                    <label>风格 <span class="optional">(可选)</span></label>
+                    <input type="text" id="clothingStyle" placeholder="整体着装风格">
+
+                    <label>焦点 <span class="optional">(可选)</span></label>
+                    <input type="text" id="focus" placeholder="主体的清晰度、锐利度或特殊处理描述">
+                </div>
+
+                <div class="section">
+                    <h2>场景描述</h2>
+                    <label>设置</label>
+                    <input type="text" id="setting" placeholder="主要场景地点或环境">
+
+                    <h3>背景元素</h3>
+                    <label>描述</label>
+                    <input type="text" id="bgDescription" placeholder="背景中的主要物体或人物">
+
+                    <label>动感 <span class="optional">(可选)</span></label>
+                    <input type="text" id="motion" placeholder="运动模糊、静态等动态处理">
+
+                    <label>对比 <span class="optional">(可选)</span></label>
+                    <input type="text" id="contrast" placeholder="主体与背景的对比关系">
+
+                    <h3>氛围</h3>
+                    <label>情绪</label>
+                    <div id="emotionsContainer">
+                        <input type="text" class="emotion" placeholder="主要情感1">
+                        <input type="text" class="emotion" placeholder="主要情感2">
+                        <input type="text" class="emotion" placeholder="其他情感或意境">
+                    </div>
+                    <button type="button" class="add-btn" onclick="addEmotion()">+ 添加情绪</button>
+
+                    <label>叙事 <span class="optional">(可选)</span></label>
+                    <textarea id="narrative" placeholder="图像想要传达的故事或瞬间描述"></textarea>
+                </div>
+
+                <div class="section">
+                    <h2>灯光与色彩</h2>
+                    <label>灯光</label>
+                    <input type="text" id="lighting" placeholder="光线类型、方向、戏剧性描述">
+
+                    <label>色彩分级</label>
+                    <input type="text" id="colorGrading" placeholder="整体色调或调色盘描述">
+
+                    <label>景深 <span class="optional">(可选)</span></label>
+                    <input type="text" id="depthOfField" placeholder="景深效果、焦距描述">
+                </div>
+
+                <div class="section">
+                    <h2>视觉风格</h2>
+                    <label>美学</label>
+                    <input type="text" id="aesthetics" placeholder="整体艺术风格，如电影感、写实、赛博朋克等">
+
+                    <label>质量</label>
+                    <input type="text" id="quality" placeholder="分辨率、细节水平描述">
+
+                    <label>效果</label>
+                    <div id="effectsContainer">
+                        <input type="text" class="effect" placeholder="具体视觉效果1">
+                        <input type="text" class="effect" placeholder="具体视觉效果2">
+                        <input type="text" class="effect" placeholder="其他特效或氛围强化">
+                    </div>
+                    <button type="button" class="add-btn" onclick="addEffect()">+ 添加效果</button>
+                </div>
+
+                <div class="section">
+                    <h2>输出要求</h2>
+                    <label>格式</label>
+                    <input type="text" id="format" value="图像">
+
+                    <label>方向 <span class="optional">(可选)</span></label>
+                    <select id="orientation">
+                        <option value="">请选择</option>
+                        <option value="竖版构图">竖版构图</option>
+                        <option value="横版构图">横版构图</option>
+                        <option value="方形">方形</option>
+                    </select>
+
+                    <label>比例 <span class="optional">(可选)</span></label>
+                    <input type="text" id="ratio" placeholder="具体宽高比，如9:16、16:9">
+
+                    <label>质量</label>
+                    <input type="text" id="outputQuality" placeholder="最终品质要求，如电影级、8K、情感表现力强等">
+                </div>
+            </form>
+        </div>
+
+        <div class="right-panel">
+            <div class="preview-header">
+                <h2>JSON预览</h2>
+                <button id="copyBtn" onclick="copyToClipboard()">复制</button>
+            </div>
+            <pre id="jsonOutput"></pre>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
